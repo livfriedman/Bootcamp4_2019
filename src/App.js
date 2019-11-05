@@ -4,6 +4,7 @@ import ViewBuilding from './components/ViewBuilding';
 import BuildingList from './components/BuildingList';
 import Credit from './components/Credit';
 import AddBuilding from './components/AddBuilding';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends React.Component {
   constructor(props) {
@@ -11,7 +12,8 @@ class App extends React.Component {
     this.state = {
       data: this.props.data,
       filterText: '',
-      selectedBuilding: 0
+      selectedBuilding: 0,
+      buildings: this.props.data
     };
   }
 
@@ -29,37 +31,25 @@ class App extends React.Component {
     })
   }
 
-  addBuilding(code, name, longitude, latitude, address){
-    var Top = this.state.data[this.state.data.length - 1].id;
-    newData.push({
-      id: Top + 1,
-      code: code,
-      name: name,
-      coordinates: {
-        longitude: longitude,
-        latitude: latitude
-      },
-      address: address
-    });
-    this.setState({
-      data: this.state.data
-      });
+  addBuilding(building) {
+    var BuildingList = this.state.buildings
+    building.id = BuildingList.length + 1
+    BuildingList.push(building);
+    this.setState({buildings: BuildingList})
   }
 
   removeBuilding(id){
-    var DataAdded = this.state.data.filter(building => {
-      return building.id !== id;
-    });
-    this.setState({
-      data: DataAdded
-    });
+    var BuildingList = this.state.buildings
+    let index = BuildingList.findIndex((el) => el.id ==id)
+    BuildingList.splice(index, 1);
+    this.setState({buildings: BuildingList})
   }
 
   render() {
 
     return (
         <div className="bg">
-          <div className="row">
+          <div className="row" >
             <h1>UF Directory App</h1>
           </div>
 
@@ -86,8 +76,9 @@ class App extends React.Component {
                       Building Details
                     </h3>
                 <ViewBuilding
-                  data={this.state.data}
-                  buildingId={this.state.selectedBuilding}
+                    selectedBuilding = {this.state.selectedBuilding}
+                    data={this.state.data}
+                    removeBuilding={this.removeBuilding.bind(this)}
                 />
               </div>
             </div>

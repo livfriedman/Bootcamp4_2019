@@ -1,53 +1,52 @@
 import React from 'react';
+import RemoveBuilding from "./RemoveBuilding";
 
 class ViewBuilding extends React.Component {
-    getBuilding(id){
-        return this.props.data.find(building => {
-            return building.id === id;
-        });
+    deleteBuilding() {
+        this.props.removeBuilding(this.props.selectedBuilding)
     }
-    getLongitude(longitude){
-        return this.props.data.find(building => {
-            return building.longitude === longitude;
-        });
-    }
-    Building(props){
-        return (
-            <div class="Building">
-                <div>
-                    <class> Code </class>: {props.outputDetails.code}
-                </div>
-                <div>
-                    <class> Name </class>: {props.outputDetails.name}
-                </div>
-                <div>
-                    <class> Coordinates </class>
-                    Latitude: {props.outputDetails.coordinates.latitude},
-                    Longitude: {props.outputDetails.coordinates.longitude}
-                </div>
-                <div>
-                    <class> Address </class>: {props.outputDetails.address}
-                </div>
-            </div>
-        );
-    }
+
     render() {
-        var buildingDetails = <i>Click a building name to view more information!</i>;
-        var outputDetails = this.getBuilding(this.props.buildingId);
-
-        if(outputDetails) {
-            buildingDetails = <this.Building outputDetails = {outputDetails}/>
-        }
-
-        return(
+        const {data, selectedBuilding} = this.props;
+        let display = (
             <div>
                 <p>
                     {' '}
-                    {buildingDetails}
+                    <i>Click a building name to view more information!</i>
                 </p>
             </div>
         );
-
+        let build = data.find((el) => el.id == selectedBuilding);
+        if (build) {
+            let c = null;
+            if (build.coordinates) {
+                c = (
+                    <div>
+                        <h3> Latitude: {build.coordinates.latitude}</h3>
+                        <h3> Longitude: {build.coordinates.longitude}</h3>
+                    </div>
+                );
+            }
+            let a = null;
+            if (build.address) {
+                a = (
+                    <div>
+                        <h3>Address: {build.address}</h3>
+                    </div>
+                );
+            }
+            display = (
+                <div>
+                    <h3> ID: {build.id}</h3>
+                    <h3> Code: {build.code} </h3>
+                    <h3> Name: {build.name}</h3>
+                    {c}
+                    {a}
+                    <RemoveBuilding removeBuilding={this.deleteBuilding.bind(this)}/>
+                </div>
+            );
+        }
+        return display;
     }
 }
 export default ViewBuilding;
