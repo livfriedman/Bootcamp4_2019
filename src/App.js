@@ -28,19 +28,19 @@ class App extends React.Component {
     //Here you will need to update the selectedBuilding property of state to the id passed into this function
     this.setState( {
       selectedBuilding: id
-    })
+    });
   }
 
   addBuilding(building) {
-    var BuildingList = this.state.buildings
-    building.id = BuildingList.length + 1
+    var BuildingList = this.state.buildings;
+    building.id = BuildingList.length + 1;
     BuildingList.push(building);
     this.setState({buildings: BuildingList})
   }
 
   removeBuilding(id){
-    var BuildingList = this.state.buildings
-    let index = BuildingList.findIndex((el) => el.id ==id)
+    var BuildingList = this.state.buildings;
+    let index = BuildingList.findIndex((el) => el.id === id);
     BuildingList.splice(index, 1);
     this.setState({buildings: BuildingList})
   }
@@ -49,6 +49,7 @@ class App extends React.Component {
 
     return (
         <div className="bg">
+
           <div className="row" >
             <h1>UF Directory App</h1>
           </div>
@@ -57,15 +58,20 @@ class App extends React.Component {
             filterText={this.state.filterText}
             filterUpdate={this.filterUpdate.bind(this)}
           />
+
           <main>
             <div className="row">
+
+
+
+
+
               <div className="column1">
                 <div className="tableWrapper">
                   <BuildingList
-                    data={this.state.data}
+                    data={this.props.data}
                     filterText = {this.state.filterText}
                     selectedUpdate={this.selectedUpdate.bind(this)}
-                    removeBuilding={this.removeBuilding.bind(this)}
                     />
                 </div>
               </div>
@@ -87,7 +93,10 @@ class App extends React.Component {
                     <h3 class="card-title">
                       Add Building
                     </h3>
-                    <AddBuilding addBuilding={this.addBuilding.bind(this)} />
+                      <div className="card-text"></div>
+                    <AddBuilding
+                        data={this.props.data}
+                        addBuilding={this.addBuilding.bind(this)} />
                   </div>
                 </div>
               </div>

@@ -1,12 +1,9 @@
 import React from 'react';
 
 class RemoveBuilding extends React.Component {
-    onRemoveBuilding(){
-        this.props.removeBuilding(this.props.id);
-    }
     render() {
         return(
-            <button onClick={this.onRemoveBuilding.bind(this)}>Remove</button>
+            <button onClick={this.props.removeBuilding}>Remove</button>
         );
     }
 }
